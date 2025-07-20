@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import io.github.some_example_name.actions.Actions;
 import io.github.some_example_name.pets.BluePuffle;
 import io.github.some_example_name.tools.GameTime;
@@ -30,8 +29,6 @@ public class Main extends ApplicationAdapter {
 
     private Stage stage;
     private Skin skin;
-    private TextButton cleanButton;
-    private TextButton sleepButton;
     private TextButton ageButton;
 
     @Override
@@ -49,6 +46,7 @@ public class Main extends ApplicationAdapter {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        //Feed Table
         Texture feedTex = new Texture("puffleo.png");
         Image feedIcon = new Image(new TextureRegionDrawable(new TextureRegion(feedTex)));
         Label feedlabel = new Label("Feed", skin);
@@ -56,11 +54,12 @@ public class Main extends ApplicationAdapter {
         Table feedTable = new Table(skin);
         feedTable.add(feedIcon).size(32);
         feedTable.add(feedlabel);
-        feedTable.setPosition(20, 50);
+        feedTable.setPosition(75, 50);
         feedTable.setBackground(skin.getDrawable("default-round"));
         feedTable.pack();
         stage.addActor(feedTable);
 
+        //Play Table
         Texture playTex = new Texture("play.png");
         Image playIcon = new Image(new TextureRegionDrawable(new TextureRegion(playTex)));
         Label playlabel = new Label("Play", skin);
@@ -68,24 +67,68 @@ public class Main extends ApplicationAdapter {
         Table playTable = new Table(skin);
         playTable.add(playIcon).size(32);
         playTable.add(playlabel);
-        playTable.setPosition(150, 50);
+        playTable.setPosition(225, 50);
         playTable.setBackground(skin.getDrawable("default-round"));
         playTable.pack();
         stage.addActor(playTable);
 
-        // ✅ Create ageButton AFTER bluePuffle is initialized
+        //Clean Table
+        Texture cleanTex = new Texture("soap.png");
+        Image cleanIcon = new Image(new TextureRegionDrawable(new TextureRegion(cleanTex)));
+        Label cleanlabel = new Label("Clean", skin);
+
+        Table cleanTable = new Table(skin);
+        cleanTable.add(cleanIcon).size(32);
+        cleanTable.add(cleanlabel);
+        cleanTable.setPosition(350, 50);
+        cleanTable.setBackground(skin.getDrawable("default-round"));
+        cleanTable.pack();
+        stage.addActor(cleanTable);
+
+        //Sleep Table
+        Texture sleepTex = new Texture("sleep.png");
+        Image sleepIcon = new Image(new TextureRegionDrawable(new TextureRegion(sleepTex)));
+        Label sleeplabel = new Label("Sleep", skin);
+
+        Table sleepTable = new Table(skin);
+        sleepTable.add(sleepIcon).size(32);
+        sleepTable.add(sleeplabel);
+        sleepTable.setPosition(500, 50);
+        sleepTable.setBackground(skin.getDrawable("default-round"));
+        sleepTable.pack();
+        stage.addActor(sleepTable);
+
+        Texture happinessTex = new Texture("happy.png");
+        Image happinessIcon = new Image(new TextureRegionDrawable(new TextureRegion(happinessTex)));
+        Label happinesslabel = new Label(String.valueOf(bluePuffle.getHappiness()), skin);
+
+        Table happinessTable = new Table(skin);
+        happinessTable.add(happinessIcon).size(32);
+        happinessTable.add(happinesslabel);
+        happinessTable.setPosition(225, 400);
+        happinessTable.setBackground(skin.getDrawable("default-round"));
+        happinessTable.pack();
+        stage.addActor(happinessTable);
+
+        //Health Table
+        Texture healthTex = new Texture("health.png");
+        Image healthIcon = new Image(new TextureRegionDrawable(new TextureRegion(healthTex)));
+        Label healthlabel = new Label(String.valueOf(bluePuffle.getHealth()), skin);
+
+        Table healthTable = new Table(skin);
+        healthTable.add(healthIcon).size(32);
+        healthTable.add(healthlabel);
+        healthTable.setPosition(350, 400);
+        healthTable.setBackground(skin.getDrawable("default-round"));
+        healthTable.pack();
+        stage.addActor(healthTable);
+
+        //Age Table
         ageButton = new TextButton(String.valueOf(bluePuffle.getAge()), skin);
-        ageButton.setPosition(500, 20);
+        ageButton.setPosition(500, 400);
         stage.addActor(ageButton);
 
-        cleanButton = new TextButton("Clean", skin);
-        cleanButton.setPosition(200, 20);
-        stage.addActor(cleanButton);
-
-        sleepButton = new TextButton("Sleep", skin);
-        sleepButton.setPosition(300, 20);
-        stage.addActor(sleepButton);
-
+        //Makes Puffle Sprite Bigger
         float scale = 4f;
         width = bluePuffle.getTexture().getWidth() * scale;
         height = bluePuffle.getTexture().getHeight() * scale;
@@ -96,6 +139,7 @@ public class Main extends ApplicationAdapter {
         x = (screenWidth - width) / 2f;
         y = (screenHeight - height) / 2f;
 
+        //Listener for Feed Table
         feedTable.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -103,6 +147,8 @@ public class Main extends ApplicationAdapter {
                 System.out.println("Fed puffle. Hunger: " + bluePuffle.getHunger());
             }
         });
+
+        //Listener for Play Table
         playTable.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -110,14 +156,18 @@ public class Main extends ApplicationAdapter {
                 System.out.println("Exercised puffle. Play: " + bluePuffle.getPlay());
             }
         });
-        cleanButton.addListener(new ClickListener() {
+
+        //Listener for Clean Table
+        cleanTable.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Actions.clean(bluePuffle);
                 System.out.println("Cleaned puffle. Cleanliness: " + bluePuffle.getCleanliness());
             }
         });
-        sleepButton.addListener(new ClickListener() {
+
+        //Listener for Sleep Table
+        sleepTable.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Actions.sleep(bluePuffle);

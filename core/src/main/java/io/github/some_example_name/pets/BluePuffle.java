@@ -60,6 +60,10 @@ public class BluePuffle {
         return health;
     }
 
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
     public void loseHealth(int damage) {
         health -= damage;
         if (health < 0) health = 0;
