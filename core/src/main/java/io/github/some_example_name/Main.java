@@ -29,7 +29,10 @@ public class Main extends ApplicationAdapter {
 
     private Stage stage;
     private Skin skin;
-    private TextButton ageButton;
+    private Image happinessIcon;
+    private Label happinessLabel;
+    private Texture happinessTex;
+
 
     @Override
     public void create() {
@@ -98,17 +101,21 @@ public class Main extends ApplicationAdapter {
         sleepTable.pack();
         stage.addActor(sleepTable);
 
-        Texture happinessTex = new Texture("happy.png");
-        Image happinessIcon = new Image(new TextureRegionDrawable(new TextureRegion(happinessTex)));
-        Label happinesslabel = new Label(String.valueOf(bluePuffle.getHappiness()), skin);
+        //Happiness Table
+        int happiness = bluePuffle.getHappiness();
+        happinessTex = getHappinessTexture(happiness);
+        happinessIcon = new Image(new TextureRegionDrawable(new TextureRegion(happinessTex)));
+        happinessLabel = new Label(String.valueOf(happiness), skin);
+
 
         Table happinessTable = new Table(skin);
         happinessTable.add(happinessIcon).size(32);
-        happinessTable.add(happinesslabel);
+        happinessTable.add(happinessLabel);
         happinessTable.setPosition(225, 400);
         happinessTable.setBackground(skin.getDrawable("default-round"));
         happinessTable.pack();
         stage.addActor(happinessTable);
+
 
         //Health Table
         Texture healthTex = new Texture("health.png");
@@ -124,9 +131,18 @@ public class Main extends ApplicationAdapter {
         stage.addActor(healthTable);
 
         //Age Table
-        ageButton = new TextButton(String.valueOf(bluePuffle.getAge()), skin);
-        ageButton.setPosition(500, 400);
-        stage.addActor(ageButton);
+        Texture ageTex = new Texture("time.png");
+        Image ageIcon = new Image(new TextureRegionDrawable(new TextureRegion(ageTex)));
+        Label agelabel = new Label(String.valueOf(bluePuffle.getAge()), skin);
+
+        Table ageTable = new Table(skin);
+        ageTable.add(ageIcon).size(32);
+        ageTable.add(agelabel);
+        ageTable.setPosition(500, 400);
+        ageTable.setBackground(skin.getDrawable("default-round"));
+        ageTable.pack();
+        stage.addActor(ageTable);
+
 
         //Makes Puffle Sprite Bigger
         float scale = 4f;
@@ -144,7 +160,9 @@ public class Main extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Actions.feed(bluePuffle);
+                updateHappinessUI();
                 System.out.println("Fed puffle. Hunger: " + bluePuffle.getHunger());
+                System.out.println(bluePuffle.getHappiness());
             }
         });
 
@@ -153,6 +171,7 @@ public class Main extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Actions.play(bluePuffle);
+                updateHappinessUI();
                 System.out.println("Exercised puffle. Play: " + bluePuffle.getPlay());
             }
         });
@@ -162,6 +181,7 @@ public class Main extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Actions.clean(bluePuffle);
+                updateHappinessUI();
                 System.out.println("Cleaned puffle. Cleanliness: " + bluePuffle.getCleanliness());
             }
         });
@@ -171,10 +191,35 @@ public class Main extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Actions.sleep(bluePuffle);
+                updateHappinessUI();
                 System.out.println("Rested puffle. Sleep: " + bluePuffle.getSleep());
             }
         });
     }
+    //Gets Texture for Happiness Table
+    private Texture getHappinessTexture(int happiness) {
+        if (happiness >= 7) {
+            return new Texture("happy.png");
+        } else if (happiness >= 4) {
+            return new Texture("moderate.png");
+        } else {
+            return new Texture("unhappy.png");
+        }
+    }
+
+    //Updates Happiness and Texture when called
+    private void updateHappinessUI() {
+        int happiness = bluePuffle.getHappiness();
+
+        // Dispose old texture
+        if (happinessTex != null) happinessTex.dispose();
+
+        happinessTex = getHappinessTexture(happiness);
+        happinessIcon.setDrawable(new TextureRegionDrawable(new TextureRegion(happinessTex)));
+
+        happinessLabel.setText(String.valueOf(happiness));
+    }
+
 
     @Override
     public void render() {
@@ -188,13 +233,15 @@ public class Main extends ApplicationAdapter {
             bluePuffle.losePlay(1);
             bluePuffle.loseCleanliness(1);
             bluePuffle.loseSleep(1);
+            bluePuffle.loseHappiness(1);
+            updateHappinessUI();
+
+            lastDecayMinute = currentMinutes;
         }
 
         if (currentMinutes > 0 && currentMinutes != lastAgeMinute) {
             bluePuffle.addAge(1);
             lastAgeMinute = currentMinutes;
-
-            ageButton.setText(String.valueOf(bluePuffle.getAge()));
         }
 
         batch.begin();

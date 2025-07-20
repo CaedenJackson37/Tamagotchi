@@ -155,5 +155,12 @@ public class BluePuffle {
 
     public void addHappiness(int amount) {
         happiness += amount;
+        if (happiness > maxHappiness) happiness = maxHappiness;
+    }
+
+    public void loseHappiness(int amount) {
+        happiness -= amount;
     }
 }
+
+
