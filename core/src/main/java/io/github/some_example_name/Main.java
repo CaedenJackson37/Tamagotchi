@@ -26,11 +26,10 @@ public class Main extends ApplicationAdapter {
 
     private GameTime gameTime;
     private int lastDecayMinute;
+    private int lastAgeMinute;
 
     private Stage stage;
     private Skin skin;
-    private TextButton feedButton;
-    private TextButton playButton;
     private TextButton cleanButton;
     private TextButton sleepButton;
 
@@ -39,6 +38,7 @@ public class Main extends ApplicationAdapter {
 
         gameTime = new GameTime();
         lastDecayMinute = 0;
+        lastAgeMinute = -1;
 
         batch = new SpriteBatch();
         bluePuffle = new BluePuffle();
@@ -127,6 +127,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        System.out.println(bluePuffle.getAge());
 
         gameTime.update(Gdx.graphics.getDeltaTime());
 
@@ -136,6 +137,11 @@ public class Main extends ApplicationAdapter {
             bluePuffle.losePlay(1);
             bluePuffle.loseCleanliness(1);
             bluePuffle.loseSleep(1);
+        }
+
+        if (currentMinutes > 0 && currentMinutes != lastAgeMinute) {
+            bluePuffle.addAge(1);
+            lastAgeMinute = currentMinutes;
         }
 
         batch.begin();

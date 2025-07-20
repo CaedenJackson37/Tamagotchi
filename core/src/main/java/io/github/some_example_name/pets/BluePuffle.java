@@ -12,6 +12,7 @@ public class BluePuffle {
     private int cleanliness;
     private int sleep;
     private int happiness;
+    private int age;
 
     private final int maxHealth;
     private final int maxHunger;
@@ -44,6 +45,14 @@ public class BluePuffle {
 
     public void dispose() {
         bluepuffle.dispose();
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void addAge(int amount) {
+        age += amount;
     }
 
     // Health Accessors
