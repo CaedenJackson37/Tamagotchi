@@ -8,14 +8,14 @@ public class BluePuffle {
 
     private int health;
     private int hunger;
-    private int exercise;
+    private int play;
     private int cleanliness;
     private int sleep;
     private int happiness;
 
     private final int maxHealth;
     private final int maxHunger;
-    private final int maxExercise;
+    private final int maxPlay;
     private final int maxCleanliness;
     private final int maxSleep;
     private final int maxHappiness;
@@ -25,14 +25,14 @@ public class BluePuffle {
 
         maxHealth = 10;
         maxHunger = 10;
-        maxExercise = 10;
+        maxPlay = 10;
         maxCleanliness = 10;
         maxSleep = 10;
         maxHappiness = 10;
 
         health = maxHealth;
         hunger = maxHunger;
-        exercise = maxExercise;
+        play = maxPlay;
         cleanliness = maxCleanliness;
         sleep = maxSleep;
         happiness = maxHappiness;
@@ -89,23 +89,20 @@ public class BluePuffle {
     }
 
     // Exercise Accessors
-    public int getExercise() {
-        return exercise;
+    public int getPlay() {
+        return play;
     }
 
-    public void loseExercise(int amount) {
-        exercise -= amount;
-        if (exercise < 0) exercise = 0;
+    public void losePlay(int amount) {
+        play -= amount;
+        if (play < 0) play = 0;
     }
 
     public void play(int amount) {
-        exercise += amount;
-        if (exercise > maxExercise) exercise = maxExercise;
+        play += amount;
+        if (play > maxPlay) play = maxPlay;
     }
 
-    public float getExercisePercentage() {
-        return (float) exercise / maxExercise;
-    }
 
     // Cleanliness Accessors
     public int getCleanliness() {
@@ -122,9 +119,6 @@ public class BluePuffle {
         if (cleanliness > maxCleanliness) cleanliness = maxCleanliness;
     }
 
-    public float getCleanlinessPercentage() {
-        return (float) cleanliness / maxCleanliness;
-    }
 
     // Sleep Accessors
     public int getSleep() {
@@ -141,9 +135,6 @@ public class BluePuffle {
         if (sleep > maxSleep) sleep = maxSleep;
     }
 
-    public float getSleepPercentage() {
-        return (float) sleep / maxSleep;
-    }
 
     public int getHappiness() {
         return happiness;
