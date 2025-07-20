@@ -32,16 +32,17 @@ public class Main extends ApplicationAdapter {
     private Skin skin;
     private TextButton cleanButton;
     private TextButton sleepButton;
+    private TextButton ageButton;
 
     @Override
     public void create() {
+        bluePuffle = new BluePuffle();
 
         gameTime = new GameTime();
         lastDecayMinute = 0;
         lastAgeMinute = -1;
 
         batch = new SpriteBatch();
-        bluePuffle = new BluePuffle();
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -54,7 +55,6 @@ public class Main extends ApplicationAdapter {
 
         Table feedTable = new Table(skin);
         feedTable.add(feedIcon).size(32);
-
         feedTable.add(feedlabel);
         feedTable.setPosition(20, 50);
         feedTable.setBackground(skin.getDrawable("default-round"));
@@ -67,13 +67,16 @@ public class Main extends ApplicationAdapter {
 
         Table playTable = new Table(skin);
         playTable.add(playIcon).size(32);
-
         playTable.add(playlabel);
         playTable.setPosition(150, 50);
         playTable.setBackground(skin.getDrawable("default-round"));
         playTable.pack();
         stage.addActor(playTable);
 
+        // ✅ Create ageButton AFTER bluePuffle is initialized
+        ageButton = new TextButton(String.valueOf(bluePuffle.getAge()), skin);
+        ageButton.setPosition(500, 20);
+        stage.addActor(ageButton);
 
         cleanButton = new TextButton("Clean", skin);
         cleanButton.setPosition(200, 20);
@@ -121,13 +124,11 @@ public class Main extends ApplicationAdapter {
                 System.out.println("Rested puffle. Sleep: " + bluePuffle.getSleep());
             }
         });
-
     }
 
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        System.out.println(bluePuffle.getAge());
 
         gameTime.update(Gdx.graphics.getDeltaTime());
 
@@ -142,6 +143,8 @@ public class Main extends ApplicationAdapter {
         if (currentMinutes > 0 && currentMinutes != lastAgeMinute) {
             bluePuffle.addAge(1);
             lastAgeMinute = currentMinutes;
+
+            ageButton.setText(String.valueOf(bluePuffle.getAge()));
         }
 
         batch.begin();
