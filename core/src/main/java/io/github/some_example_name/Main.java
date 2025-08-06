@@ -30,13 +30,15 @@ public class Main extends ApplicationAdapter {
     private Stage stage;
     private Skin skin;
     private Image happinessIcon;
-    private Label happinessLabel;
-    private Texture happinessTex;
+    private TextureRegion happinessTex;
+
+    public Texture spriteSheet;
 
 
     @Override
     public void create() {
         bluePuffle = new BluePuffle();
+        spriteSheet = new Texture(Gdx.files.internal("spritesheet.png"));
 
         gameTime = new GameTime();
         lastDecayMinute = 0;
@@ -50,69 +52,54 @@ public class Main extends ApplicationAdapter {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         //Feed Table
-        Texture feedTex = new Texture("puffleo.png");
+        TextureRegion feedTex = new TextureRegion(spriteSheet, 103, 0, 32, 32);
         Image feedIcon = new Image(new TextureRegionDrawable(new TextureRegion(feedTex)));
-        Label feedlabel = new Label("Feed", skin);
 
         Table feedTable = new Table(skin);
-        feedTable.add(feedIcon).size(32);
-        feedTable.add(feedlabel);
+        feedTable.add(feedIcon).size(100);
         feedTable.setPosition(75, 50);
-        feedTable.setBackground(skin.getDrawable("default-round"));
         feedTable.pack();
         stage.addActor(feedTable);
 
         //Play Table
-        Texture playTex = new Texture("play.png");
+        TextureRegion playTex = new TextureRegion(spriteSheet, 171, 0, 32, 32);
         Image playIcon = new Image(new TextureRegionDrawable(new TextureRegion(playTex)));
-        Label playlabel = new Label("Play", skin);
 
         Table playTable = new Table(skin);
-        playTable.add(playIcon).size(32);
-        playTable.add(playlabel);
+        playTable.add(playIcon).size(100);
         playTable.setPosition(225, 50);
-        playTable.setBackground(skin.getDrawable("default-round"));
         playTable.pack();
         stage.addActor(playTable);
 
         //Clean Table
-        Texture cleanTex = new Texture("soap.png");
+        TextureRegion cleanTex = new TextureRegion(spriteSheet, 69, 0, 32, 32);
         Image cleanIcon = new Image(new TextureRegionDrawable(new TextureRegion(cleanTex)));
-        Label cleanlabel = new Label("Clean", skin);
 
         Table cleanTable = new Table(skin);
-        cleanTable.add(cleanIcon).size(32);
-        cleanTable.add(cleanlabel);
+        cleanTable.add(cleanIcon).size(100);
         cleanTable.setPosition(350, 50);
-        cleanTable.setBackground(skin.getDrawable("default-round"));
         cleanTable.pack();
         stage.addActor(cleanTable);
 
         //Sleep Table
-        Texture sleepTex = new Texture("sleep.png");
+        TextureRegion sleepTex = new TextureRegion(spriteSheet, 239, 0, 32, 32);
         Image sleepIcon = new Image(new TextureRegionDrawable(new TextureRegion(sleepTex)));
-        Label sleeplabel = new Label("Sleep", skin);
 
         Table sleepTable = new Table(skin);
-        sleepTable.add(sleepIcon).size(32);
-        sleepTable.add(sleeplabel);
+        sleepTable.add(sleepIcon).size(100);
         sleepTable.setPosition(500, 50);
-        sleepTable.setBackground(skin.getDrawable("default-round"));
         sleepTable.pack();
         stage.addActor(sleepTable);
 
         //Happiness Table
         int happiness = bluePuffle.getHappiness();
-        happinessTex = getHappinessTexture(happiness);
+        TextureRegion happinessTex = getHappinessTexture(happiness);
         happinessIcon = new Image(new TextureRegionDrawable(new TextureRegion(happinessTex)));
-        happinessLabel = new Label(String.valueOf(happiness), skin);
 
 
         Table happinessTable = new Table(skin);
-        happinessTable.add(happinessIcon).size(32);
-        happinessTable.add(happinessLabel);
-        happinessTable.setPosition(225, 400);
-        happinessTable.setBackground(skin.getDrawable("default-round"));
+        happinessTable.add(happinessIcon).size(100);
+        happinessTable.setPosition(200, 360);
         happinessTable.pack();
         stage.addActor(happinessTable);
 
@@ -123,37 +110,36 @@ public class Main extends ApplicationAdapter {
         Label healthlabel = new Label(String.valueOf(bluePuffle.getHealth()), skin);
 
         Table healthTable = new Table(skin);
-        healthTable.add(healthIcon).size(32);
+        healthTable.add(healthIcon).size(80);
         healthTable.add(healthlabel);
-        healthTable.setPosition(350, 400);
-        healthTable.setBackground(skin.getDrawable("default-round"));
+        healthTable.setPosition(350, 350);
         healthTable.pack();
         stage.addActor(healthTable);
 
         //Age Table
-        Texture ageTex = new Texture("time.png");
+        TextureRegion ageTex = new TextureRegion(spriteSheet, 0, 0, 32, 32);
         Image ageIcon = new Image(new TextureRegionDrawable(new TextureRegion(ageTex)));
         Label agelabel = new Label(String.valueOf(bluePuffle.getAge()), skin);
 
         Table ageTable = new Table(skin);
-        ageTable.add(ageIcon).size(32);
-        ageTable.add(agelabel);
-        ageTable.setPosition(500, 400);
-        ageTable.setBackground(skin.getDrawable("default-round"));
+        ageTable.add(ageIcon).size(100);
+        ageTable.add(agelabel).padLeft(10);
+        ageTable.setPosition(500, 350);
         ageTable.pack();
         stage.addActor(ageTable);
 
+        //Hunger Table
+        Texture hungerTex = new Texture("time.png");
+        Image hungerIcon = new Image(new TextureRegionDrawable(new TextureRegion(hungerTex)));
+        Label hungerlabel = new Label(String.valueOf(bluePuffle.getHunger()), skin);
 
-        //Makes Puffle Sprite Bigger
-        float scale = 4f;
-        width = bluePuffle.getTexture().getWidth() * scale;
-        height = bluePuffle.getTexture().getHeight() * scale;
+        Table hungerTable = new Table(skin);
+        hungerTable.add(hungerIcon).size(32);
+        hungerTable.add(hungerlabel);
+        hungerTable.setPosition(75,400);
+        hungerTable.pack();
+        stage.addActor(hungerTable);
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
-
-        x = (screenWidth - width) / 2f;
-        y = (screenHeight - height) / 2f;
 
         //Listener for Feed Table
         feedTable.addListener(new ClickListener() {
@@ -197,13 +183,13 @@ public class Main extends ApplicationAdapter {
         });
     }
     //Gets Texture for Happiness Table
-    private Texture getHappinessTexture(int happiness) {
+    private TextureRegion getHappinessTexture(int happiness) {
         if (happiness >= 7) {
-            return new Texture("happy.png");
+            return new TextureRegion(spriteSheet, 36, 0, 32, 32);
         } else if (happiness >= 4) {
-            return new Texture("moderate.png");
+            return new TextureRegion(spriteSheet, 138, 0, 32, 32);
         } else {
-            return new Texture("unhappy.png");
+            return new TextureRegion(spriteSheet, 206, 0, 32, 32);
         }
     }
 
@@ -211,13 +197,9 @@ public class Main extends ApplicationAdapter {
     private void updateHappinessUI() {
         int happiness = bluePuffle.getHappiness();
 
-        // Dispose old texture
-        if (happinessTex != null) happinessTex.dispose();
 
         happinessTex = getHappinessTexture(happiness);
         happinessIcon.setDrawable(new TextureRegionDrawable(new TextureRegion(happinessTex)));
-
-        happinessLabel.setText(String.valueOf(happiness));
     }
 
 
@@ -245,7 +227,7 @@ public class Main extends ApplicationAdapter {
         }
 
         batch.begin();
-        batch.draw(bluePuffle.getTexture(), x, y, width, height);
+        batch.draw(bluePuffle.getTexture(), 225, 170, 200,200);
         batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -255,7 +237,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        bluePuffle.dispose();
+        spriteSheet.dispose();
         stage.dispose();
         skin.dispose();
     }

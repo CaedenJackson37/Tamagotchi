@@ -1,10 +1,12 @@
 package io.github.some_example_name.pets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class BluePuffle {
 
-    private Texture bluepuffle;
+    private TextureRegion bluepuffle;
 
     private int health;
     private int hunger;
@@ -21,8 +23,12 @@ public class BluePuffle {
     private final int maxSleep;
     private final int maxHappiness;
 
+    private Texture spritesheet;
+
     public BluePuffle() {
-        bluepuffle = new Texture("bluepuffle.png");
+
+        spritesheet = new Texture(Gdx.files.internal("spritesheet.png"));
+        bluepuffle = new TextureRegion(spritesheet, 36, 0, 32, 34);
 
         maxHealth = 10;
         maxHunger = 10;
@@ -39,13 +45,10 @@ public class BluePuffle {
         happiness = maxHappiness;
     }
 
-    public Texture getTexture() {
+    public TextureRegion getTexture() {
         return bluepuffle;
     }
 
-    public void dispose() {
-        bluepuffle.dispose();
-    }
 
     public int getAge() {
         return age;
@@ -160,6 +163,7 @@ public class BluePuffle {
 
     public void loseHappiness(int amount) {
         happiness -= amount;
+        if (happiness < 0) happiness = 0;
     }
 }
 

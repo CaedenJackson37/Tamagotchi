@@ -1,8 +1,15 @@
 package io.github.some_example_name.actions;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import io.github.some_example_name.pets.BluePuffle;
 
 public class Actions {
+
+    BluePuffle bluePuffle;
+    public Texture spriteSheet;
+
+
     public static void feed(BluePuffle puffle) {
         puffle.feed(2);
         puffle.heal(2);
