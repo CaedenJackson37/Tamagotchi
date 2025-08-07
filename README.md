@@ -6,7 +6,7 @@ The start of a Tamagotchi game that I can run in the background on my computer. 
 <br />
 
 
-<img src="tamagotchi.png" alt="Tamagotchi Example">
+<img src="tamagotchibackground.png" alt="Tamagotchi Example">
 
 
 <h2>Languages and Utilities Used</h2>
